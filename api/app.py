@@ -21,18 +21,18 @@ def health():
 
 @app.get("/snapshot")
 def snapshot(symbol: str = Query(..., min_length=1)):
-    # TODO: call your real snapshot() in the executor
+    # TODO: wire to real executor snapshot
     return {"symbol": symbol, "status": "stub"}
 
 @app.get("/bars")
 def bars(symbol: str = Query(..., min_length=1), tf: str = Query("15m"), limit: int = Query(50, ge=1, le=1000)):
-    # TODO: call your real bars() in the executor
+    # TODO: wire to real executor bars fetch
     return {"symbol": symbol, "tf": tf, "limit": limit, "status": "stub"}
 
 class Intent(BaseModel):
     symbol: str
-    side: str                # "buy" | "sell" | "cancel"
-    type: str = "market"     # "market" | "limit"
+    side: str                 # "buy" | "sell" | "cancel"
+    type: str = "market"      # "market" | "limit"
     qty: int | None = None
     notional: float | None = None
     limit_price: float | None = None
@@ -49,5 +49,5 @@ async def post_intent(request: Request, x_signature: str | None = Header(default
         data = Intent.model_validate_json(body)
     except Exception as e:
         raise HTTPException(422, detail=str(e))
-    # TODO: hand off to your executor/queue here
+    # TODO: publish to worker/queue; for now, echo back
     return {"accepted": True, "intent": data.model_dump()}
