@@ -3,3 +3,4 @@ uvicorn
 httpx
 python-dotenv
 uvicorn[standard]
+tzdata>=2024.1
