@@ -30,3 +30,14 @@ def root():
 @app.get("/healthz")
 def healthz():
     return {"ok": True}
+
+from fastapi import Request
+import hashlib, pathlib
+@ app.get("/_routes")
+def _routes(request: Request):
+    import executor.worker as _w
+    worker_path = pathlib.Path(_w.__file__)
+    worker_hash = hashlib.sha256(worker_path.read_bytes()).hexdigest()
+    return {"worker_file": str(worker_path),
+            "worker_sha256": worker_hash,
+            "routes": [getattr(r, "path", None) for r in app.routes]}
