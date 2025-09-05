@@ -88,6 +88,8 @@ def _json_body_fields(body: bytes) -> Tuple[Optional[str], Optional[str], bool]:
     except Exception:
         return None, None, False
 
+PATH_ALLOWLIST={" /","/health","/healthz","/docs","/openapi.json","/bars","/status","/account"}
+
 class BBBIntentGuard(BaseHTTPMiddleware):
     """
     V2 signature / replay protection / idempotency / rate-limit /
@@ -96,6 +98,9 @@ class BBBIntentGuard(BaseHTTPMiddleware):
     """
 
     async def dispatch(self, request: Request, call_next):
+    global _trades_today
+    if request.url.path in PATH_ALLOWLIST:
+        return await call_next(request)
     global _trades_today
         # Only guard POST /intent
         if request.method != "POST" or request.url.path.rstrip("/") != "/intent":
