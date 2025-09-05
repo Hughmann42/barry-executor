@@ -98,6 +98,9 @@ class BBBIntentGuard(BaseHTTPMiddleware):
     """
 
     async def dispatch(self, request: Request, call_next):
+        global _trades_today
+        if request.url.path in PATH_ALLOWLIST:
+            return await call_next(request)
     global _trades_today
     if request.url.path in PATH_ALLOWLIST:
         return await call_next(request)
