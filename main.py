@@ -5,6 +5,7 @@ app = FastAPI(title="Barry Executor", version="1.0")
 
 # Core routes
 app.include_router(executor_router)
+app.include_router(account_router)
 
 # Intent guard (safe + minimal)
 try:
