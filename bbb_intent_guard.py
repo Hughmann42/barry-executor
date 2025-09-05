@@ -96,6 +96,7 @@ class BBBIntentGuard(BaseHTTPMiddleware):
     """
 
     async def dispatch(self, request: Request, call_next):
+    global _trades_today
         # Only guard POST /intent
         if request.method != "POST" or request.url.path.rstrip("/") != "/intent":
             return await call_next(request)
