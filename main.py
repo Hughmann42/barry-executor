@@ -16,8 +16,8 @@ except Exception as e:
 
 # Optional extra validate router (if present)
 try:
-    from bbb_validate_router import router as _bbb_validate_router
-    app.include_router(_bbb_validate_router)
+    from bbb_validate_router import router as _bbb_validate_router# 
+    app.include_router(_bbb_validate_router)  # disabled for test
     print("[BBB] Validate/limits router enabled")
 except Exception:
     pass
