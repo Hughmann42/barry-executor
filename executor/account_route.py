@@ -1,4 +1,3 @@
-# account_route.py
 import os, requests
 from fastapi import APIRouter, Header, HTTPException
 
@@ -16,10 +15,8 @@ def _alp_headers():
 
 @router.get("/account")
 def get_account(x_shared_secret: str = Header(None, alias="X-Shared-Secret")):
-    # shared-secret gate
     if not SHARED or x_shared_secret != SHARED:
         raise HTTPException(status_code=401, detail="unauthorized")
-    # proxy to Alpaca
     r = requests.get(f"{ALPACA_BASE}/v2/account", headers=_alp_headers(), timeout=10)
     if r.status_code != 200:
         raise HTTPException(status_code=r.status_code, detail=r.text)
