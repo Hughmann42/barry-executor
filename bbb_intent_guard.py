@@ -102,6 +102,9 @@ class BBBIntentGuard(BaseHTTPMiddleware):
     if request.url.path in PATH_ALLOWLIST:
         return await call_next(request)
     global _trades_today
+    if request.url.path in PATH_ALLOWLIST:
+        return await call_next(request)
+    global _trades_today
         # Only guard POST /intent
         if request.method != "POST" or request.url.path.rstrip("/") != "/intent":
             return await call_next(request)
